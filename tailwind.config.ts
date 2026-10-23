@@ -1,24 +1,22 @@
 import type { Config } from "tailwindcss";
 
-// Placeholder brand tokens — replica-design / replica-brand replace these.
-// Deliberately NOT Splitwise green.
+// Splitwise-style identity (our own hues): friendly green, warm coral for
+// "you owe", green for "you are owed", charcoal text, white sidebar on light grey.
 const config: Config = {
   content: ["./app/**/*.{ts,tsx}", "./components/**/*.{ts,tsx}"],
   theme: {
     extend: {
       colors: {
-        brand: {
-          DEFAULT: "#4f46e5", // indigo — own colour, not the original's
-          dark: "#4338ca",
-          soft: "#eef2ff",
-        },
-        owe: "#e2662c",   // you owe (warm)
-        owed: "#1f9d6b",  // you are owed (green)
-        ink: "#1f2430",
-        muted: "#6b7280",
-        line: "#e5e7eb",
+        bg: "#f4f6f5",
+        surface: "#ffffff",
+        ink: "#3a3f45",
+        muted: "#8a9199",
+        line: "#e7eae9",
+        brand: { DEFAULT: "#17a67b", dark: "#128063", soft: "#e4f5ef" }, // teal-green
+        owe: "#e2603c",   // you owe (warm coral)
+        owed: "#19a06a",  // you are owed (green)
       },
-      borderRadius: { xl: "0.9rem" },
+      borderRadius: { xl: "0.75rem" },
     },
   },
   plugins: [],

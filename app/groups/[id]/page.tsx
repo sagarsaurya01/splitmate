@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { notFound, redirect } from "next/navigation";
-import Nav from "@/components/Nav";
+import Shell from "@/components/Shell";
+import Avatar from "@/components/Avatar";
 import { currentUser } from "@/lib/session";
 import {
   getGroup,
@@ -32,13 +33,13 @@ export default function GroupPage({
   const members = group.memberIds.map((id) => getUser(id)!).filter(Boolean);
 
   return (
-    <>
-      <Nav user={me} />
-      <main className="mx-auto max-w-3xl px-4 py-6">
-        <div className="mb-4">
-          <Link href="/groups" className="text-sm text-muted hover:text-ink">&larr; Groups</Link>
-          <h1 className="mt-1 text-xl font-bold text-ink">{group.name}</h1>
-          <p className="text-xs uppercase tracking-wide text-muted">{group.groupType}</p>
+    <Shell user={me} active="groups" addHref={`/groups/${group.id}#add`}>
+        <div className="mb-4 flex items-center gap-3 border-b border-line pb-4">
+          <Avatar name={group.name} size={48} />
+          <div>
+            <h1 className="text-2xl font-bold text-ink">{group.name}</h1>
+            <p className="text-xs capitalize text-muted">{group.groupType}</p>
+          </div>
         </div>
 
         {/* Simplified balances */}
@@ -47,16 +48,17 @@ export default function GroupPage({
             Who owes whom
           </h2>
           {debts.length === 0 ? (
-            <p className="text-sm text-muted">Everyone is settled up.</p>
+            <p className="text-sm text-muted">Everyone is settled up. 🎉</p>
           ) : (
-            <ul className="space-y-1 text-sm">
+            <ul className="space-y-2 text-sm">
               {debts.map((d, i) => (
-                <li key={i} className="flex items-center justify-between">
+                <li key={i} className="flex items-center gap-2">
+                  <Avatar name={name(d.from)} size={26} />
                   <span className="text-ink">
                     <span className="font-semibold text-owe">{name(d.from)}</span> owes{" "}
                     <span className="font-semibold text-owed">{name(d.to)}</span>
                   </span>
-                  <span className="font-semibold text-ink">{formatMoney(d.amountMinor)}</span>
+                  <span className="ml-auto font-bold text-ink">{formatMoney(d.amountMinor)}</span>
                 </li>
               ))}
             </ul>
@@ -65,24 +67,25 @@ export default function GroupPage({
 
         {/* Expenses */}
         <section className="mb-6">
-          <h2 className="mb-3 text-sm font-semibold uppercase tracking-wide text-muted">
+          <h2 className="mb-2 text-sm font-semibold uppercase tracking-wide text-muted">
             Expenses
           </h2>
           {expenses.length === 0 ? (
             <div className="card text-sm text-muted">No expenses yet. Add the first one below.</div>
           ) : (
-            <ul className="space-y-2">
+            <ul className="divide-y divide-line overflow-hidden rounded-xl border border-line bg-surface">
               {expenses.map((e) => {
                 const payer = e.shares.find((s) => s.paidMinor > 0);
                 return (
-                  <li key={e.id} className="card flex items-center justify-between">
-                    <div>
-                      <p className="font-semibold text-ink">{e.description}</p>
+                  <li key={e.id} className="flex items-center gap-3 px-4 py-3">
+                    <Avatar name={e.description} size={38} />
+                    <div className="min-w-0 flex-1">
+                      <p className="truncate font-semibold text-ink">{e.description}</p>
                       <p className="text-xs text-muted">
                         {name(payer?.userId ?? e.createdBy)} paid &middot; {e.spentAt}
                       </p>
                     </div>
-                    <span className="font-semibold text-ink">{formatMoney(e.amountMinor, e.currencyCode)}</span>
+                    <span className="font-bold text-ink">{formatMoney(e.amountMinor, e.currencyCode)}</span>
                   </li>
                 );
               })}
@@ -129,10 +132,9 @@ export default function GroupPage({
                 ))}
               </div>
             </fieldset>
-            <button className="btn" type="submit">Add expense</button>
+            <button className="btn-coral" type="submit">Add expense</button>
           </form>
         </section>
-      </main>
-    </>
+    </Shell>
   );
 }

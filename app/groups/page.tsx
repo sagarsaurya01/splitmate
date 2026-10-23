@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { redirect } from "next/navigation";
-import Nav from "@/components/Nav";
+import Shell from "@/components/Shell";
+import Avatar from "@/components/Avatar";
 import { currentUser } from "@/lib/session";
 import { getGroupsForUser, getUsers } from "@/lib/data";
 import { createGroupAction } from "@/app/actions";
@@ -12,29 +13,29 @@ export default function GroupsPage() {
   if (!me) redirect("/login");
   const groups = getGroupsForUser(me.id);
   const others = getUsers().filter((u) => u.id !== me.id);
+  const addHref = groups.length === 1 ? `/groups/${groups[0].id}#add` : "/groups";
 
   return (
-    <>
-      <Nav user={me} />
-      <main className="mx-auto max-w-3xl px-4 py-6">
-        <h1 className="mb-4 text-xl font-bold text-ink">Groups</h1>
+    <Shell user={me} active="groups" addHref={addHref}>
+        <h1 className="mb-4 text-2xl font-bold text-ink">Groups</h1>
 
         {groups.length === 0 ? (
           <div className="card mb-6 text-sm text-muted">No groups yet — create one below.</div>
         ) : (
-          <ul className="mb-6 space-y-2">
+          <ul className="mb-6 divide-y divide-line overflow-hidden rounded-xl border border-line bg-surface">
             {groups.map((gr) => (
               <li key={gr.id}>
-                <Link href={`/groups/${gr.id}`} className="card flex items-center justify-between hover:border-brand">
+                <Link href={`/groups/${gr.id}`} className="flex items-center gap-3 px-4 py-3 hover:bg-bg">
+                  <Avatar name={gr.name} size={38} />
                   <span className="font-semibold text-ink">{gr.name}</span>
-                  <span className="text-xs uppercase tracking-wide text-muted">{gr.groupType}</span>
+                  <span className="ml-auto text-xs capitalize text-muted">{gr.groupType}</span>
                 </Link>
               </li>
             ))}
           </ul>
         )}
 
-        <div className="card">
+        <div className="card max-w-lg">
           <h2 className="mb-3 text-sm font-semibold uppercase tracking-wide text-muted">
             New group
           </h2>
@@ -63,10 +64,9 @@ export default function GroupsPage() {
                 <p className="pt-1 text-xs text-muted">You are added automatically.</p>
               </div>
             </fieldset>
-            <button className="btn" type="submit">Create group</button>
+            <button className="btn-coral" type="submit">Create group</button>
           </form>
         </div>
-      </main>
-    </>
+    </Shell>
   );
 }
