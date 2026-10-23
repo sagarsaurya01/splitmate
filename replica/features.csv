@@ -1,0 +1,29 @@
+feature,area,priority,original,clone,notes
+Sign up / log in with email,auth,must,yes,yes,
+Log in with Google,auth,must,yes,no,OAuth
+Add a friend by email,friends,must,yes,no,friend may be pending (no account yet)
+Create a group with a type,groups,must,yes,yes,home/trip/couple/apartment/house/other
+Add members to a group,groups,must,yes,yes,
+Add an expense split equally,expense,must,yes,yes,core loop
+Split an expense unequally by exact amounts,expense,must,yes,no,must reconcile to cost
+Split by shares,expense,must,yes,no,weighted
+Split by percentages,expense,must,yes,no,must sum to 100
+Running balances per friend and per group,balances,must,yes,yes,paid_share - owed_share
+Settle up (record a payment),settle,must,yes,no,manual, no payment rail
+Multi-currency expenses,expense,must,yes,no,100+ currencies; store currency_code
+Multiple payers on one expense,expense,should,yes,no,paid_share per user
+Debt simplification (simplify debts),balances,should,yes,partial,min cash-flow graph equal-split path verified in M0
+Comments on an expense,expense,should,yes,no,
+Activity feed / notifications,activity,should,yes,no,type 0..15
+Recurring expenses,expense,should,yes,no,weekly/fortnightly/monthly/yearly
+Expense categories,expense,should,yes,no,seed static list
+Edit history / undo delete,expense,should,yes,no,deleted_at + restore
+CSV export,data,could,yes,no,
+Group cover photo / avatars,groups,could,yes,no,
+Expense search,expense,could,yes,no,Pro in original
+Charts: spending by category,analytics,could,yes,no,Pro in original
+Payment rails (Venmo/PayPal/Paytm),payments,must,yes,skip,third-party regulated region-locked
+Bank / transaction import,expense,should,yes,skip,needs aggregator license US-only
+Receipt OCR scanning,expense,should,yes,skip,paid ML feature; maybe v2 with OCR API
+The Splitwise user network,platform,must,yes,skip,their users are not a feature
+Splitwise brand name/logo/colours,brand,must,yes,skip,rebrand step replaces entirely
