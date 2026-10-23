@@ -11,12 +11,20 @@ export default function DashboardPage() {
 
   const { owed, owe, perGroup } = userSummary(me.id);
   const nothing = perGroup.length === 0;
+  // an expense always belongs to a group: go straight there if there's one,
+  // otherwise send the user to the groups list to pick one.
+  const addHref = perGroup.length === 1 ? `/groups/${perGroup[0].group.id}#add` : "/groups";
 
   return (
     <>
       <Nav user={me} />
       <main className="mx-auto max-w-3xl px-4 py-6">
-        <h1 className="mb-4 text-xl font-bold text-ink">Balances</h1>
+        <div className="mb-4 flex items-center justify-between">
+          <h1 className="text-xl font-bold text-ink">Balances</h1>
+          {!nothing && (
+            <Link href={addHref} className="btn">+ Add expense</Link>
+          )}
+        </div>
 
         <div className="mb-6 grid grid-cols-2 gap-3">
           <div className="card">

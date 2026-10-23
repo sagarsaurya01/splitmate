@@ -91,7 +91,7 @@ export default function GroupPage({
         </section>
 
         {/* Add equal-split expense */}
-        <section className="card">
+        <section className="card scroll-mt-4" id="add">
           <h2 className="mb-3 text-sm font-semibold uppercase tracking-wide text-muted">
             Add an expense (split equally)
           </h2>
